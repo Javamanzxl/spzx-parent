@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = 接口的全限定符 -->
+<mapper namespace="com.atguigu.spzx.product.mapper.BrandMapper">
+
+    <sql id="columns">
+        id,name,logo,create_time,update_time,is_deleted
+    </sql>
+    <select id="findAll" resultType="com.atguigu.spzx.model.entity.product.Brand">
+        select <include refid="columns"/>
+            from brand
+        where is_deleted = 0
+        order by id desc
+    </select>
+</mapper>

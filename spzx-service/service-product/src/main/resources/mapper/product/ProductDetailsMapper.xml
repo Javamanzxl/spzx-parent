@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = 接口的全限定符 -->
+<mapper namespace="com.atguigu.spzx.product.mapper.ProductDetailsMapper">
+
+    <sql id="columns">
+        id,product_id,image_urls,create_time,update_time,is_deleted
+    </sql>
+    <select id="findBySkuId" resultType="com.atguigu.spzx.model.entity.product.ProductDetails">
+        select <include refid="columns"/>
+            from product_details
+        where is_deleted = 0
+    </select>
+</mapper>

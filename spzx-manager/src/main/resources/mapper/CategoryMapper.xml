@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = 接口的全限定符 -->
+<mapper namespace="com.atguigu.spzx.manager.mapper.CategoryMapper">
+
+    <sql id="columns">
+        id,name,image_url,parent_id,status,order_num,create_time,update_time,is_deleted
+    </sql>
+    <insert id="batchInsert">
+        insert into category (id,name,image_url,parent_id,
+        status,order_num) values
+        <foreach collection="categoryExcelVoList" item="category" separator=",">
+            (#{category.id},#{category.name},#{category.imageUrl},
+            #{category.parentId},#{category.status},#{category.orderNum})
+        </foreach>
+    </insert>
+    <select id="findCategoryList" resultType="com.atguigu.spzx.model.entity.product.Category">
+        select
+        <include refid="columns"/>
+        from category
+        where parent_id = #{parentId} and is_deleted = 0
+        order by id desc
+    </select>
+    <select id="countByParentId" resultType="integer">
+        select count(*)
+        from category
+        where parent_id = #{parentId}
+          and is_deleted = 0
+    </select>
+    <select id="selectCategoryAll" resultType="com.atguigu.spzx.model.entity.product.Category">
+        select
+        <include refid="columns"/>
+        from category where is_deleted = 0
+        ORDER BY id DESC
+    </select>
+</mapper>

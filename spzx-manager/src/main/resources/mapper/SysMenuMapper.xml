@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = 接口的全限定符 -->
+<mapper namespace="com.atguigu.spzx.manager.mapper.SysMenuMapper">
+
+    <sql id="columns">
+        id,parent_id,title,component,sort_value,status,create_time,update_time,is_deleted
+    </sql>
+    <select id="findAll" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        select <include refid="columns"/> from sys_menu where is_deleted = 0
+        order by sort_value
+    </select>
+    <select id="countChildById" resultType="java.lang.Integer">
+        select count(id) from sys_menu where parent_id = #{id} and is_deleted = 0
+    </select>
+
+    <select id="findMenusByUserId" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        select distinct m.* from sys_menu m
+        inner join sys_role_menu srm on m.id = srm.menu_id
+        inner join sys_user_role sur on srm.role_id = sur.role_id
+        where sur.user_id = #{userId} and m.is_deleted = 0
+    </select>
+    <select id="selectById" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        select <include refid="columns" /> from sys_menu where parent_id = #{parentId}
+        and is_deleted = 0
+    </select>
+
+    <insert id="insert">
+        insert into sys_menu (id, parent_id, title, component, sort_value, status, is_deleted)
+        values (#{id},#{parentId},#{title},#{component},#{sortValue},#{status},0)
+    </insert>
+    <update id="updateById">
+        update sys_menu set
+        <if test="parentId != null and parentId != ''">
+            parent_Id = #{parentId},
+        </if>
+        <if test="title != null and title != ''">
+            title = #{title},
+        </if>
+        <if test="component != null and component != ''">
+            component = #{component},
+        </if>
+        <if test="sortValue != null">
+            sort_value = #{sortValue},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        update_time = now()
+        where id = #{id}
+    </update>
+    <update id="removeById">
+        update sys_menu set is_deleted = 1 where id = #{id}
+    </update>
+</mapper>

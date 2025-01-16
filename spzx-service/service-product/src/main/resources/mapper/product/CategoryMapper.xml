@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = 接口的全限定符 -->
+<mapper namespace="com.atguigu.spzx.product.mapper.CategoryMapper">
+
+    <sql id="columns">
+        id,name,image_url,parent_id,status,order_num,create_time,update_time,is_deleted
+    </sql>
+
+    <select id="selectOneCategory" resultType="com.atguigu.spzx.model.entity.product.Category">
+        select <include refid="columns"/>
+            from category
+        where is_deleted = 0 and parent_id = 0
+        order by id
+    </select>
+
+    <select id="findAll" resultType="com.atguigu.spzx.model.entity.product.Category">
+        select
+        <include refid="columns"/>
+        from category
+        where
+        status = 1 and is_deleted = 0
+        order by order_num
+    </select>
+</mapper>

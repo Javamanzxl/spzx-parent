@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace = 接口的全限定符 -->
+<mapper namespace="com.atguigu.spzx.user.mapper.UserAddressMapper">
+
+    <sql id="columns">
+        id,user_id,name,phone,tag_name,province_code,city_code,district_code,address,full_address,is_default,create_time,update_time,is_deleted
+    </sql>
+
+    <select id="findUserAddressList" resultType="com.atguigu.spzx.model.entity.user.UserAddress">
+        select <include refid="columns"/>
+            from user_address
+        where user_id = #{userId} and is_deleted = 0
+    </select>
+</mapper>
